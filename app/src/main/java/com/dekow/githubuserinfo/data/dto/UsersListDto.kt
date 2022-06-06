@@ -42,6 +42,8 @@ data class UsersListDto(
 fun UsersListDto.toUser(): User{
     return User(
         name = login,
-        location = organizationsUrl
+        imageUrl = avatarUrl,
+        node = nodeId,
+        repos = reposUrl
     )
 }

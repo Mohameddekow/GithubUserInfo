@@ -47,28 +47,6 @@ class UserViewModel
         }.launchIn(viewModelScope)
 
 
-//        viewModelScope.launch (Dispatchers.IO){
-//
-//            getUsersListUseCase().onEach { result ->
-//                when (result) {
-//                    is Resource.Success -> {
-//                        _state.value = UsersListState(usersList = result.data ?: emptyList())
-//                    }
-//                    is Resource.Error -> {
-//                        _state.value = UsersListState(
-//                            error = result.errorMessage ?: "An unexpected error occurred"
-//                        )
-//                    }
-//                    is Resource.Loading -> {
-//                        _state.value = UsersListState(isLoading = true)
-//                    }
-//                }
-//            }.launchIn(viewModelScope)
-//
-//        }
-
-
-
     }
 
 }

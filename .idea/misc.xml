@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/compose-model-1654500258100.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1654502090495.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/ic_baseline_sort.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/ic_round_link_24.xml" value="0.1765" />
+        <entry key="app/src/main/res/drawable/ic_round_location.xml" value="0.204" />
+        <entry key="app/src/main/res/drawable/ic_round_person.xml" value="0.204" />
+        <entry key="app/src/main/res/drawable/ic_round_persons.xml" value="0.204" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
