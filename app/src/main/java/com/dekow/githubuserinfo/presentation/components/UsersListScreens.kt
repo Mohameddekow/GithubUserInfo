@@ -1,7 +1,6 @@
 package com.dekow.githubuserinfo.presentation.components
 
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,37 +11,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.dekow.githubuserinfo.R
 import com.dekow.githubuserinfo.domain.model.User
-import com.dekow.githubuserinfo.presentation.users_list.UserViewModel
-import com.dekow.githubuserinfo.ui.theme.BackgroundViolet
-import com.dekow.githubuserinfo.ui.theme.ItemBackgroundWhite
-import com.dekow.githubuserinfo.ui.theme.MyCustomShapes
+import com.dekow.githubuserinfo.domain.model.UserDetails
+import com.dekow.githubuserinfo.presentation.screen_routes.Screens
+import com.dekow.githubuserinfo.presentation.users_list.UserListViewModel
+import com.dekow.githubuserinfo.ui.theme.*
 
 
 @Composable
 fun UsersListScreen(
-    viewModel: UserViewModel = hiltViewModel()
+    navController: NavHostController,
+    listViewModel: UserListViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
-
-    Log.d("userTest", state.usersList.toString())
-
+    val state = listViewModel.userListState.value
 
     Column(
         modifier = Modifier
@@ -52,7 +49,7 @@ fun UsersListScreen(
         verticalArrangement = Arrangement.Center,
     ) {
 
-        FeaturedDevsRow()
+        FeaturedDevsRow(navController = navController)
 
         FilterDevsRow()
 
@@ -72,11 +69,12 @@ fun UsersListScreen(
                 items(state.usersList) { user ->
                     UserItem(
                         user = user,
+                        ListItemBackgroundWhite
                     )
                 }
             }
 
-            //error or loading state
+           // error or loading state
             if(state.error.isNotBlank()) {
                 Text(
                     text = state.error,
@@ -91,14 +89,18 @@ fun UsersListScreen(
             if(state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
-        }
-    }
 
+        }
+
+    }
 
 }
 
 @Composable
-fun FeaturedDevsRow() {
+fun FeaturedDevsRow(
+    navController: NavHostController
+) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -114,16 +116,30 @@ fun FeaturedDevsRow() {
             modifier = Modifier
                 .padding(start = 4.dp)
         )
-        Icon(
-            Icons.Rounded.Search,
-            contentDescription = "Search",
+
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(5.dp)
-                .size(33.dp)
+                .height(46.dp)
+                .width(40.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(BackgroundBox)
                 .clickable {
-                    //clicks
-                }
-        )
+                    navController.navigate((Screens.UserDetailsScreen.route + "/mohameddekow"))
+                },
+
+            ) {
+
+            Icon(
+                Icons.Rounded.Search,
+                contentDescription = "Search",
+                modifier = Modifier
+                    .padding(5.dp)
+                    .size(33.dp)
+
+            )
+        }
+
 
     }
 }
@@ -163,6 +179,7 @@ fun FilterDevsRow() {
 @Composable
 fun UserItem(
     user: User,
+    colors: Color
     //onIconClick: () -> Unit
 ) {
 
@@ -171,29 +188,31 @@ fun UserItem(
             .fillMaxWidth()
             .padding(horizontal = 3.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(ItemBackgroundWhite),
+            .background(color = colors),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top,
     ) {
         Box(
             modifier = Modifier
-                .widthIn(110.dp)
-                .heightIn(130.dp)
+                .widthIn(90.dp)
+                .height(100.dp)
                 .clip(RoundedCornerShape(15.dp))
         ) {
 
 
-            Image(
+            //Image(painter = painterResource(user.placeHolderId!!), contentDescription = "placeholder")
+
+           Image(
                 painter = rememberAsyncImagePainter(user.imageUrl),
                 contentDescription = "image",
-                modifier = Modifier.size(130.dp)
+                modifier = Modifier.size(100.dp)
             )
+
         }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
                 .padding(horizontal = 5.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
@@ -202,24 +221,47 @@ fun UserItem(
                 text = user.name,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .padding(start = 5.dp, top = 2.dp),
+                    .padding(start = 5.dp, top = 4.dp),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = user.node,
+                text = "${user.node} - ${user.id}",
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 5.dp, top = 5.dp),
                 fontWeight = FontWeight.Light,
             )
             Text(
-                text = user.repos,
+                text = user.html,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 5.dp, top = 5.dp),
                 fontWeight = FontWeight.Light,
             )
+
+//            Text(
+//                text = user.name,
+//                textAlign = TextAlign.Start,
+//                modifier = Modifier
+//                    .padding(start = 5.dp, top = 4.dp),
+//                fontSize = 24.sp,
+//                fontWeight = FontWeight.Bold,
+//            )
+//            Text(
+//                text = "${user.node} - ${user.id}",
+//                textAlign = TextAlign.Start,
+//                modifier = Modifier
+//                    .padding(start = 5.dp, top = 5.dp),
+//                fontWeight = FontWeight.Light,
+//            )
+//            Text(
+//                text = user.html,
+//                textAlign = TextAlign.Start,
+//                modifier = Modifier
+//                    .padding(start = 5.dp, top = 5.dp),
+//                fontWeight = FontWeight.Light,
+//            )
         }
     }
 
@@ -229,5 +271,5 @@ fun UserItem(
 @Preview(showBackground = true)
 @Composable
 fun UerPrev() {
-    UsersListScreen()
+    UsersListScreen(navController = rememberNavController())
 }

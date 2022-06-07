@@ -1,7 +1,8 @@
-package com.dekow.githubuserinfo.domain.use_case.users_list
+package com.dekow.githubuserinfo.domain.use_case.user
 
 import com.dekow.githubuserinfo.commons.Resource
 import com.dekow.githubuserinfo.data.dto.toUser
+import com.dekow.githubuserinfo.data.dto.toUserDetails
 import com.dekow.githubuserinfo.domain.model.*
 import com.dekow.githubuserinfo.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,24 +15,24 @@ import java.io.IOException
 import javax.inject.Inject
 
 
-class GetUsersListUseCase
+class GetUserUseCase
 @Inject
 constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<User>>> = flow {
+    operator fun invoke(userName: String): Flow<Resource<UserDetails>> = flow {
 
         try {
-            emit(Resource.Loading<List<User>>())
+            emit(Resource.Loading<UserDetails>())
 
-            val usersList = repository.getAllUserTest().map { it.toUser() }
-            emit(Resource.Success<List<User>>(usersList))
+            val user = repository.getUser(userName).toUserDetails()
+            emit(Resource.Success<UserDetails>(user))
 
         }catch (e: HttpException){
-            emit(Resource.Error<List<User>>(e.localizedMessage ?: "An unexpected error occurred"))
+            emit(Resource.Error<UserDetails>(e.localizedMessage ?: "An unexpected error occurred"))
 
         }catch (e: IOException){
-            emit(Resource.Error<List<User>>("Couldn't reach server. Check your internet connection."))
+            emit(Resource.Error<UserDetails>("Couldn't reach server. Check your internet connection."))
         }
 
     }

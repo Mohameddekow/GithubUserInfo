@@ -44,6 +44,7 @@ fun UsersListDto.toUser(): User{
         name = login,
         imageUrl = avatarUrl,
         node = nodeId,
-        repos = reposUrl
+        id = id,
+        html = htmlUrl
     )
 }
