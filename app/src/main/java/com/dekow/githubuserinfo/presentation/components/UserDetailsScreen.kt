@@ -56,6 +56,9 @@ fun UserDetailScreen(
         verticalArrangement = Arrangement.Top,
     ) {
 
+        MyTopAppBar("Details", navController = navController)
+
+
         //error or loading box
         Box(
             modifier = Modifier.padding(4.dp),
@@ -64,29 +67,38 @@ fun UserDetailScreen(
 
             // error or loading state
             if(userState.error.isNotBlank()) {
-                Text(
-                    text = userState.error,
-                    color = MaterialTheme.colors.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ){
+                    Text(
+                        text = userState.error,
+                        color = MaterialTheme.colors.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+
             }
             if(userState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(top = 100.dp)
-                    .height(50.dp)
-                    .width(50.dp)
-                    .fillMaxWidth()
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ){
+                    CircularProgressIndicator(modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(top = 100.dp)
+                        .height(50.dp)
+                        .width(50.dp)
+                        .fillMaxWidth()
+                    )
+                }
+
             }
         }
-
-
-        MyTopAppBar("Details", navController = navController)
 
         if (user != null) {
             UserDetailsItem(user = user)

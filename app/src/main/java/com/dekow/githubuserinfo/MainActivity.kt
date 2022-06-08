@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dekow.githubuserinfo.presentation.components.SearchUserScreen
 import com.dekow.githubuserinfo.presentation.components.UserDetailScreen
 import com.dekow.githubuserinfo.presentation.components.UsersListScreen
 import com.dekow.githubuserinfo.presentation.screen_routes.Screens
@@ -51,9 +52,12 @@ class MainActivity : ComponentActivity() {
                             UsersListScreen(navController = navController)
                         }
 
+                         composable(route = Screens.UserSearchScreen.route){
+                             SearchUserScreen(navController = navController)
+                          }
+
                         composable(
                             route = Screens.UserDetailsScreen.route + "/{userName}" , //"?name = /{name}" for optional args
-
                         ){
                             UserDetailScreen(navController = navController)
                         }
