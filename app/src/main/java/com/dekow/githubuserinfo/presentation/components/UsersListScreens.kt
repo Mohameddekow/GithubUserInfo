@@ -125,10 +125,19 @@ fun FeaturedDevsRow(
                 .clip(RoundedCornerShape(8.dp))
                 .background(BackgroundBox)
                 .clickable {
-                    navController.navigate((Screens.UserDetailsScreen.route + "/mohameddekow"))
+//                    navController.navigate((Screens.UserDetailsScreen.route + "/mohameddekow"))
+                    navController.navigate((Screens.UserSearchScreen.route))
+
                 },
 
             ) {
+
+//            var text = ""
+//            OutlinedTextField(
+//                value = text,
+//                onValueChange = { text = it },
+//
+//            )
 
             Icon(
                 Icons.Rounded.Search,
