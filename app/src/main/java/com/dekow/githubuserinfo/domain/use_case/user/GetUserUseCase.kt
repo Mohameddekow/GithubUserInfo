@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -33,6 +34,8 @@ constructor(
 
         }catch (e: IOException){
             emit(Resource.Error<UserDetails>("Couldn't reach server. Check your internet connection."))
+        }catch (e: Exception){
+            emit(Resource.Error<UserDetails>(e.localizedMessage ?: "An unexpected error occurred"))
         }
 
     }

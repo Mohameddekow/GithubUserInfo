@@ -34,7 +34,6 @@ import com.dekow.githubuserinfo.presentation.screen_routes.Screens
 import com.dekow.githubuserinfo.presentation.user.UsersViewModel
 import com.dekow.githubuserinfo.ui.theme.BackgroundBox
 import com.dekow.githubuserinfo.ui.theme.DetailsItemBackgroundWhite
-import com.dekow.githubuserinfo.ui.theme.ItemBackgroundWhite
 
 @Composable
 fun UserDetailScreen(
