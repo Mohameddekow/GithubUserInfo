@@ -11,20 +11,15 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.dekow.githubuserinfo.presentation.screen_routes.Screens
 import com.dekow.githubuserinfo.ui.theme.BackgroundViolet
-import com.dekow.githubuserinfo.ui.theme.DetailsItemBackgroundWhite
-import com.dekow.githubuserinfo.ui.theme.ItemBackgroundWhite
-
 @Composable
 fun SearchUserScreen(
     navController: NavHostController
