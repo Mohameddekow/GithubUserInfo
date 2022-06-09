@@ -41,93 +41,69 @@ fun UserDetailScreen(
     usersViewModel: UsersViewModel = hiltViewModel()
 ) {
     val followers = usersViewModel.followersState.value
-
     val following = usersViewModel.followingState.value
-
     val userState = usersViewModel.userState.value
-    val user = userState.user
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-    ) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ){
 
-        MyTopAppBar("Details", navController = navController)
+        if(userState.error.isNotBlank()) {
+            Text(
+                text = userState.error,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .align(Alignment.Center)
+            )
+        }
+        if(userState.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
 
-
-        //error or loading box
-        Box(
-            modifier = Modifier.padding(4.dp),
-            contentAlignment = Alignment.Center,
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
         ) {
+            MyTopAppBar("Details", navController = navController)
+            userState.user?.let { user ->
+                UserDetailsItem(user = user)
+                UserBiosRow(user = user)
 
-            // error or loading state
-            if(userState.error.isNotBlank()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ){
-                    Text(
-                        text = userState.error,
-                        color = MaterialTheme.colors.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                            .align(Alignment.Center)
-                    )
-                }
+                MyRowItem(R.drawable.ic_round_persons,  user.company.toString())
+                MyRowItem(R.drawable.ic_round_location, user.location.toString())
+                MyRowItem(R.drawable.ic_round_link_24, user.htmlUrl.toString())
+                MyRowItem(
+                    R.drawable.ic_round_persons,
+                    "followers: ${user.followers.toString()}      followings: ${user.following.toString()}")
 
-            }
-            if(userState.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ){
-                    CircularProgressIndicator(modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(top = 100.dp)
-                        .height(50.dp)
-                        .width(50.dp)
-                        .fillMaxWidth()
-                    )
-                }
+                ReposRows(user = user)
 
+                MyLazyRowLists(
+                    following.userFollows,
+                    R.drawable.ic_round_persons,
+                    "Followings (${userState.user.following})"
+                )
+
+                MyLazyRowLists(
+                    followers.userFollows,
+                    R.drawable.ic_round_persons,
+                    "Followers (${userState.user.followers})"
+                )
             }
         }
-
-        if (user != null) {
-            UserDetailsItem(user = user)
-            UserBiosRow(user = user)
-        }
-
-        MyRowItem(R.drawable.ic_round_persons,  user?.company.toString())
-        MyRowItem(R.drawable.ic_round_location, user?.location.toString())
-        MyRowItem(R.drawable.ic_round_link_24, user?.htmlUrl.toString())
-        MyRowItem(
-            R.drawable.ic_round_persons,
-            "followers: ${user?.followers.toString()}      followings: ${user?.following.toString()}")
-
-        user?.let { ReposRows(user = it) }
-
-
-        MyLazyRowLists(
-            following.userFollows,
-            R.drawable.ic_round_persons,
-            "Followings (${userState.user?.following})"
-        )
-
-        MyLazyRowLists(
-            followers.userFollows,
-            R.drawable.ic_round_persons,
-            "Followers (${userState.user?.followers})"
-        )
 
     }
 }
+
+
+
 
 @Composable
 fun MyTopAppBar(
@@ -295,7 +271,7 @@ fun UserBiosRow(
         verticalAlignment = Alignment.CenterVertically,
     ){
         Text(
-            text = user.bio!!,
+            text = user.bio ?: "",
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
 
@@ -374,7 +350,7 @@ fun UserDetailsItem(
     ) {
         Box(
             modifier = Modifier
-                .widthIn(90.dp)
+                .width(90.dp)
                 .height(110.dp)
                 .padding(start = 15.dp, top = 5.dp, bottom = 5.dp, end = 1.dp)
                 .clip(RoundedCornerShape(15.dp))

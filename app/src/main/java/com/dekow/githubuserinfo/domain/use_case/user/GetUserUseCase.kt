@@ -21,6 +21,7 @@ class GetUserUseCase
 constructor(
     private val repository: UserRepository
 ) {
+
     operator fun invoke(userName: String): Flow<Resource<UserDetails>> = flow {
 
         try {

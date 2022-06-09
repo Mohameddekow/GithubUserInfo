@@ -15,7 +15,9 @@ import com.dekow.githubuserinfo.domain.use_case.user.GetUserUseCase
 import com.dekow.githubuserinfo.domain.use_case.users_list.GetUsersListUseCase
 import com.dekow.githubuserinfo.presentation.user.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -53,7 +55,6 @@ class UsersViewModel
     }
 
     private fun getUser(userName: String) {
-
         getUserUseCase(userName).onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -69,9 +70,10 @@ class UsersViewModel
                 }
             }
         }.launchIn(viewModelScope)
-
-
     }
+
+
+
 
     private fun getUserFollowers(userName: String) {
         getFollowersUseCase(userName).onEach { result ->
