@@ -350,7 +350,7 @@ fun UserDetailsItem(
     ) {
         Box(
             modifier = Modifier
-                .width(90.dp)
+                .widthIn(90.dp)
                 .height(110.dp)
                 .padding(start = 15.dp, top = 5.dp, bottom = 5.dp, end = 1.dp)
                 .clip(RoundedCornerShape(15.dp))
